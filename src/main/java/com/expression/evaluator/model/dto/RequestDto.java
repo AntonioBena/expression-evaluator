@@ -1,5 +1,6 @@
-package com.expression.evaluator.model;
+package com.expression.evaluator.model.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,5 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 public class RequestDto {
+    @NotNull(message = "Customer data can not be empty")
     private CustomerDto customer;
 }
