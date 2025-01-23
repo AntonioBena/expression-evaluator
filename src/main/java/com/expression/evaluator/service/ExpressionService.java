@@ -1,5 +1,6 @@
 package com.expression.evaluator.service;
 
+import com.expression.evaluator.exception.expression.DuplicateExpressionException;
 import com.expression.evaluator.model.dto.ExpressionDto;
 import com.expression.evaluator.model.entity.ExpressionEntity;
 import com.expression.evaluator.repository.ExpressionRepository;
@@ -16,8 +17,13 @@ public class ExpressionService {
 
     public String createExpression(ExpressionDto dto){
         var exp = mapToEntity(dto);
-        exp.setUuid(UUID.randomUUID().toString());
 
+        boolean expressionExists = expressionRepository.existsByName(exp.getName());
+        if (expressionExists){
+            throw new DuplicateExpressionException("Expression with name: " + dto.getName() + " already exists!");
+        }
+
+        exp.setUuid(UUID.randomUUID().toString());
         var saved = expressionRepository.save(exp);
         return saved.getUuid();
     }

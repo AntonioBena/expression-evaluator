@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ExpressionRepository extends JpaRepository<ExpressionEntity, Integer> {
+    boolean existsByName(String name);
 }

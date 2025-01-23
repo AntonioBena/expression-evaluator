@@ -1,4 +1,4 @@
-package com.expression.evaluator.exception;
+package com.expression.evaluator.exception.validation;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
