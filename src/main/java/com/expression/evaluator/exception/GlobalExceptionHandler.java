@@ -1,8 +1,10 @@
 package com.expression.evaluator.exception;
 
+import com.expression.evaluator.exception.condition.InvalidConditionException;
 import com.expression.evaluator.exception.expression.DuplicateExpressionException;
 import com.expression.evaluator.exception.expression.ExpressionException;
 import com.expression.evaluator.exception.expression.ExpressionNotFoundException;
+import com.expression.evaluator.exception.operator.UnsupportedOperatorException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,4 +24,7 @@ public interface GlobalExceptionHandler {
                 .build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
+
+    ResponseEntity<ErrorResponse> handleUnsupportedOperatorException(UnsupportedOperatorException ex);
+    ResponseEntity<ErrorResponse> handleInvalidConditionException(InvalidConditionException ex);
 }
