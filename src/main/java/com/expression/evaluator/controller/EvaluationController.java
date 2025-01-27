@@ -1,20 +1,20 @@
 package com.expression.evaluator.controller;
 
 import com.expression.evaluator.model.dto.RequestDto;
+import com.expression.evaluator.service.EvaluationService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping(path = "/evaluate")
 public class EvaluationController {
 
+    private final EvaluationService evaluationService;
+
     @PostMapping
-    public RequestDto newCompanyRegistrationRequest(@RequestBody @Valid RequestDto request){
-        return request;
+    public String evaluate(@RequestBody @Valid RequestDto request, @RequestParam String uuid) throws Exception {
+        return evaluationService.evaluate(request, uuid);
     }
 }

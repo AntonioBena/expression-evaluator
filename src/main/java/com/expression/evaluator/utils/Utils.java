@@ -22,4 +22,8 @@ public class Utils {
                 .name(dto.getName())
                 .build();
     }
+
+    public static String removeParentheses(String inputValue) {
+        return inputValue.replace("(", "").replace(")", "");
+    }
 }
