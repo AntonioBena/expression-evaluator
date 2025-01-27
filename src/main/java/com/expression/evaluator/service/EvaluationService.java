@@ -19,6 +19,6 @@ public class EvaluationService {
                 .orElseThrow(() -> new ExpressionNotFoundException("Requested expression does not exist!"));
 
         var evaluated = evaluator.evaluate(expression.getValue(), request);
-        return "Evaluation result of expression: " + expression + " is: " + evaluated;
+        return "Evaluation result of expression: " + expression.getValue() + " is: " + evaluated;
     }
 }

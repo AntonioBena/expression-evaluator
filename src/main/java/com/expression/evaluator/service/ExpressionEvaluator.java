@@ -2,19 +2,18 @@ package com.expression.evaluator.service;
 
 import com.expression.evaluator.exception.condition.InvalidConditionException;
 import com.expression.evaluator.exception.operator.UnsupportedOperatorException;
-import com.expression.evaluator.model.dto.RequestDto;
 
 import static com.expression.evaluator.utils.Constants.*;
 
 public class ExpressionEvaluator {
 
-    public boolean evaluate(String expression, RequestDto rootObject) throws Exception {
+    public boolean evaluate(String expression, Object validationObject) throws Exception {
         String[] expressionParts = expression.split(LOGICAL_REGEX);
 
-        var firstResult = evaluateExpression(expressionParts[0].trim(), rootObject);
+        var firstResult = evaluateExpression(expressionParts[0].trim(), validationObject);
         for (int index = 1; index < expressionParts.length; index++) {
             var logicalOperator = extractLogicalOperator(expression, expressionParts[index - 1], expressionParts[index]);
-            var secondResult = evaluateExpression(expressionParts[index].trim(), rootObject);
+            var secondResult = evaluateExpression(expressionParts[index].trim(), validationObject);
 
             if (logicalOperator.equalsIgnoreCase(OR)) {
                 firstResult = firstResult || secondResult;
@@ -27,7 +26,7 @@ public class ExpressionEvaluator {
         return firstResult;
     }
 
-    private boolean evaluateExpression(String expression, RequestDto data) throws Exception {
+    private boolean evaluateExpression(String expression, Object validationObject) throws Exception {
         expression = expression.trim();
         if (expression.startsWith("(") && expression.endsWith(")")) {
             expression = expression.substring(1, expression.length() - 1);
@@ -41,7 +40,7 @@ public class ExpressionEvaluator {
             var orResult = false;
 
             for (String orPart : orParts) {
-                orResult = orResult || evaluateCondition(orPart.trim(), data);
+                orResult = orResult || evaluateCondition(orPart.trim(), validationObject);
             }
             result = result && orResult;
         }
@@ -55,8 +54,8 @@ public class ExpressionEvaluator {
         return expression.substring(leftEnd, rightStart).trim();
     }
 
-    private boolean evaluateCondition(String condition, RequestDto rootObject) throws Exception {
-        String[] variableParts = condition.split(CONDITIONS_REGEX); //TODO dodano
+    private boolean evaluateCondition(String condition, Object validationObject) throws Exception {
+        String[] variableParts = condition.split(CONDITIONS_REGEX);
         if (variableParts.length != 2) {
             throw new InvalidConditionException("Invalid condition: " + condition);
         }
@@ -67,7 +66,7 @@ public class ExpressionEvaluator {
         var preOperator = condition.replace(expressionVariableName, "")
                 .replace(expressionVariableValue, "").trim();
 
-        Object inputObjectVariableValue = resolveValue(expressionVariableName, rootObject);
+        Object inputObjectVariableValue = resolveValue(expressionVariableName, validationObject);
 
         var op = preOperator.replace("\"", "");
         var comparisonOperator = op.replace(" ", "");
@@ -90,9 +89,9 @@ public class ExpressionEvaluator {
         };
     }
 
-    private Object resolveValue(String inputJsonFieldPath, RequestDto rootObject) throws Exception {
+    private Object resolveValue(String inputJsonFieldPath, Object validationObject) throws Exception {
         String[] fields = inputJsonFieldPath.split("\\.");
-        Object currentObject = rootObject;
+        Object currentObject = validationObject;
 
         for (String field : fields) {
             var declaredField = currentObject.getClass().getDeclaredField(field);
