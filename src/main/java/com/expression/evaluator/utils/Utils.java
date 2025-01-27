@@ -28,10 +28,10 @@ public class Utils {
     }
 
     public static String extractLogicalOperator(String expression, String leftPart, String rightPart) {
-        var leftEnd = expression.indexOf(leftPart) + leftPart.length();
-        var rightStart = expression.indexOf(rightPart);
+        var left = expression.indexOf(leftPart) + leftPart.length();
+        var right = expression.indexOf(rightPart);
 
-        return expression.substring(leftEnd, rightStart).trim();
+        return expression.substring(left, right).trim();
     }
 
     public static String extractAndFormatCondition(String condition, String expressionName, String expressionValue) {
