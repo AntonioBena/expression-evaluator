@@ -24,7 +24,9 @@ public class Utils {
     }
 
     public static String removeParentheses(String inputValue) {
-        return inputValue.replace("(", "").replace(")", "");
+        return inputValue
+                .replace("(", "")
+                .replace(")", "");
     }
 
     public static String extractLogicalOperator(String expression, String leftPart, String rightPart) {
