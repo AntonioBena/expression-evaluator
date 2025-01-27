@@ -8,7 +8,7 @@ public class Utils {
     private Utils() {
     }
 
-    public static ExpressionDto mapToDto(ExpressionEntity entity){
+    public static ExpressionDto mapToDto(ExpressionEntity entity) {
         return ExpressionDto.builder()
                 .uuid(entity.getUuid())
                 .name(entity.getName())
@@ -16,7 +16,7 @@ public class Utils {
                 .build();
     }
 
-    public static ExpressionEntity mapToEntity(ExpressionDto dto){
+    public static ExpressionEntity mapToEntity(ExpressionDto dto) {
         return ExpressionEntity.builder()
                 .value(dto.getValue())
                 .name(dto.getName())
@@ -25,5 +25,22 @@ public class Utils {
 
     public static String removeParentheses(String inputValue) {
         return inputValue.replace("(", "").replace(")", "");
+    }
+
+    public static String extractLogicalOperator(String expression, String leftPart, String rightPart) {
+        var leftEnd = expression.indexOf(leftPart) + leftPart.length();
+        var rightStart = expression.indexOf(rightPart);
+
+        return expression.substring(leftEnd, rightStart).trim();
+    }
+
+    public static String extractAndFormatCondition(String condition, String expressionName, String expressionValue) {
+        return condition
+                .replace(expressionName, "")
+                .replace(expressionValue
+                        .replace("\"", ""), "")
+                .trim()
+                .replace("\"", "")
+                .replace(" ", "");
     }
 }
