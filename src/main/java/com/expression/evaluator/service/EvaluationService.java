@@ -1,5 +1,6 @@
 package com.expression.evaluator.service;
 
+import com.expression.evaluator.evaluator.ExpressionEvaluator;
 import com.expression.evaluator.exception.expression.ExpressionNotFoundException;
 import com.expression.evaluator.model.dto.RequestDto;
 import com.expression.evaluator.repository.ExpressionRepository;

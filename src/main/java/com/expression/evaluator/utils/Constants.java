@@ -4,7 +4,7 @@ public class Constants {
     private Constants() {
     }
 
-    public static final String CONDITIONS_REGEX = "==|!=|<|>|<=|>=";
+    public static final String CONDITIONS_REGEX = ">=|<=|==|!=|>|<";
     public static final String LOGICAL_REGEX = "(?i)\\sOR\\s|\\sAND\\s|\\sNOT\\s";
     public static final String AND_NOT_REGEX = "(?i)\\s&&\\s|\\s!\\s";
     public static final String OR_REGEX = "\\|\\|";
