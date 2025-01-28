@@ -1,6 +1,7 @@
 package com.expression.evaluator.evaluator;
 
 import com.expression.evaluator.exception.condition.InvalidConditionException;
+import com.expression.evaluator.exception.expression.ExpressionException;
 import com.expression.evaluator.exception.operator.UnsupportedOperatorException;
 
 import static com.expression.evaluator.utils.Constants.*;
@@ -107,6 +108,9 @@ public class ExpressionEvaluator {
         Object currentObject = validationObject;
 
         for (String field : fields) {
+            if (currentObject == null){
+                throw new ExpressionException("Can not process your request because you gave me null fields!");
+            }
             var declaredField = currentObject.getClass().getDeclaredField(field);
             declaredField.setAccessible(true);
             currentObject = declaredField.get(currentObject);
