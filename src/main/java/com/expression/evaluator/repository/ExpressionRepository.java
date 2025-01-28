@@ -9,6 +9,5 @@ import java.util.Optional;
 @Repository
 public interface ExpressionRepository extends JpaRepository<ExpressionEntity, Integer> {
     boolean existsByName(String name);
-    boolean existsByUuid(String uuid);
     Optional<ExpressionEntity> findByUuid(String uuid);
 }
