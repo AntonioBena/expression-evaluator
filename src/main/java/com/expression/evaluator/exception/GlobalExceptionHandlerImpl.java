@@ -1,5 +1,6 @@
 package com.expression.evaluator.exception;
 
+import com.expression.evaluator.exception.condition.InvalidConditionException;
 import com.expression.evaluator.exception.expression.DuplicateExpressionException;
 import com.expression.evaluator.exception.expression.ExpressionNotFoundException;
 import com.expression.evaluator.exception.operator.UnsupportedOperatorException;

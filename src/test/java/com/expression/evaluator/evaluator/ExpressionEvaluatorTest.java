@@ -1,6 +1,6 @@
 package com.expression.evaluator.evaluator;
 
-import com.expression.evaluator.exception.InvalidConditionException;
+import com.expression.evaluator.exception.condition.InvalidConditionException;
 import com.expression.evaluator.exception.expression.ExpressionException;
 import com.expression.evaluator.model.CustomerType;
 import org.junit.jupiter.api.BeforeEach;
