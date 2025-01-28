@@ -109,7 +109,7 @@ class ExpressionEvaluatorTest {
     }
 
     @Test
-    void test_should_throw_InvalidConditionException_evaluate_simple_expression() throws Exception {
+    void test_should_throw_InvalidConditionException_evaluate_simple_expression() {
         var address = prepareAddress("New York", 325, "5th Ave", "65213");
         var testObject = prepareCustomer("Antonio", "test", 130, CustomerType.INDIVIDUAL, address);
 
