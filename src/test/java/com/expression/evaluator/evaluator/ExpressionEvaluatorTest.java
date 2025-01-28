@@ -23,7 +23,33 @@ class ExpressionEvaluatorTest {
         var testObject = prepareCustomer("Antonio", "test", 33, CustomerType.INDIVIDUAL, address);
 
         var expression = prepareExpressionEntity("simple expression",
-                "(firstName == " + "Antonio" +  " && salary < 100)");
+                "(firstName == Antonio && salary < 100)");
+
+        var result = expressionEvaluator.evaluate(expression.getValue(), testObject);
+
+        assertTrue(result);
+    }
+
+    @Test
+    void test_should_evaluate_simple_OR_operator_expression_return_true() throws Exception {
+        var address = prepareAddress("New York", 325, "5th Ave", "65213");
+        var testObject = prepareCustomer("Antonio", "test", 130, CustomerType.INDIVIDUAL, address);
+
+        var expression = prepareExpressionEntity("simple expression",
+                "(firstName == Antonio || salary < 100)");
+
+        var result = expressionEvaluator.evaluate(expression.getValue(), testObject);
+
+        assertTrue(result);
+    }
+
+    @Test
+    void test_should_evaluate_simple_NOT_operator_expression_return_true() throws Exception {
+        var address = prepareAddress("New York", 325, "5th Ave", "65213");
+        var testObject = prepareCustomer("Antonio", "test", 130, CustomerType.INDIVIDUAL, address);
+
+        var expression = prepareExpressionEntity("simple expression",
+                "(firstName != Antonio ! salary < 100)"); //TODO
 
         var result = expressionEvaluator.evaluate(expression.getValue(), testObject);
 
@@ -36,7 +62,7 @@ class ExpressionEvaluatorTest {
         var testObject = prepareCustomer("Antonio", "test", 130, CustomerType.INDIVIDUAL, address);
 
         var expression = prepareExpressionEntity("simple expression",
-                "(firstName == " + "Dino" +  " && salary >= 100) OR (lastName == " + "test" + " && address.city == " + "New York" + ")");
+                "(firstName == Dino && salary >= 100) OR (lastName == test && address.city == New York)");
 
         var result = expressionEvaluator.evaluate(expression.getValue(), testObject);
 
@@ -49,7 +75,7 @@ class ExpressionEvaluatorTest {
         var testObject = prepareCustomer("Antonio", "test", 130, CustomerType.INDIVIDUAL, address);
 
         var expression = prepareExpressionEntity("simple expression",
-                "(firstName == " + "Dino" +  " && salary <= 100) OR (lastName == " + "test2" + " && address.city == " + "New York" + ")");
+                "(firstName == Dino && salary <= 100) OR (lastName == test2" + " && address.city == New York)");
 
         var result = expressionEvaluator.evaluate(expression.getValue(), testObject);
 
@@ -62,7 +88,7 @@ class ExpressionEvaluatorTest {
         var testObject = prepareCustomer("Antonio", "test", 130, CustomerType.INDIVIDUAL, address);
 
         var expression = prepareExpressionEntity("simple expression",
-                "(firstName == " + "Dino" +  " && salary > 100) NOT (lastName == " + "test2" + " && address.city == " + "New York" + ")");
+                "(firstName == Dino && salary > 100) NOT (lastName == test2" + " && address.city == New York)");
 
         var result = expressionEvaluator.evaluate(expression.getValue(), testObject);
 
@@ -75,7 +101,7 @@ class ExpressionEvaluatorTest {
         var testObject = prepareCustomer("Antonio", "test", 130, CustomerType.INDIVIDUAL, address);
 
         var expression = prepareExpressionEntity("simple expression",
-                "(firstName == " + "Antonio" +  " && salary > 100) NOT (lastName == " + "test" + " && address.city == " + "New York" + ")");
+                "(firstName == Antonio && salary > 100) NOT (lastName == test && address.city == New York)");
 
         var result = expressionEvaluator.evaluate(expression.getValue(), testObject);
 
@@ -88,7 +114,7 @@ class ExpressionEvaluatorTest {
         var testObject = prepareCustomer("Antonio", "test", 130, CustomerType.INDIVIDUAL, address);
 
         var expression = prepareExpressionEntity("simple expression",
-                "(firstName == " + "Antonio" +  " && salary > 100) AND (lastName == " + "test" + " && address.city == " + "New York" + ")");
+                "(firstName == Antonio && salary > 100) AND (lastName == test && address.city == New York)");
 
         var result = expressionEvaluator.evaluate(expression.getValue(), testObject);
 
@@ -101,7 +127,7 @@ class ExpressionEvaluatorTest {
         var testObject = prepareCustomer("Antonio", "test", 130, CustomerType.INDIVIDUAL, address);
 
         var expression = prepareExpressionEntity("simple expression",
-                "(firstName == " + "Dino" +  " && salary > 100) AND (lastName == " + "test2" + " && address.city == " + "New York" + ")");
+                "(firstName == Dino && salary > 100) AND (lastName == test2 && address.city == New York)");
 
         var result = expressionEvaluator.evaluate(expression.getValue(), testObject);
 
@@ -114,7 +140,7 @@ class ExpressionEvaluatorTest {
         var testObject = prepareCustomer("Antonio", "test", 130, CustomerType.INDIVIDUAL, address);
 
         var expression = prepareExpressionEntity("simple expression",
-                "(firstName == " + "Antonio" +  " ZZ salary > 100)");
+                "(firstName == Antonio ZZ salary > 100)");
 
         var exception = assertThrows(InvalidConditionException.class,
                 () -> expressionEvaluator.evaluate(expression.getValue(), testObject));

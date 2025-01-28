@@ -34,19 +34,45 @@ public class ExpressionEvaluator {
             expression = expression.substring(1, expression.length() - 1);
         }
 
-        String[] expressionParts = expression.split(AND_NOT_REGEX);
-        var result = true;
+        String[] expressionParts;
+        boolean result;
 
-        for (String andPart : expressionParts) {
-            String[] orParts = andPart.split(OR_REGEX);
-            var orResult = false;
+        var logicalOperatorMatch = getLogicalOperatorMatch(expression);
 
-            for (String orPart : orParts) {
-                orResult = orResult || evaluateCondition(orPart.trim(), validationObject);
-            }
-            result = result && orResult;
+        switch (logicalOperatorMatch) {
+            case AND:
+                expressionParts = expression.split(AND_REGEX);
+                result = true;
+                for (String part : expressionParts) {
+                    result = result && evaluateCondition(part.trim(), validationObject);
+                }
+                break;
+            case OR:
+                expressionParts = expression.split(OR_REGEX);
+                result = false;
+                for (String part : expressionParts) {
+                    result = result || evaluateCondition(part.trim(), validationObject);
+                }
+                break;
+            case NOT:
+                expressionParts = expression.split(NOT_REGEX);
+                result = !evaluateCondition(expressionParts[1].trim(), validationObject);
+                break;
+            default:
+                throw new InvalidConditionException("Invalid condition: " + expression);
         }
         return result;
+    }
+
+    private String getLogicalOperatorMatch(String expression) {
+        if (expression.matches(AND_REGEX_MATCH)) {
+            return AND;
+        } else if (expression.matches(OR_REGEX_MATCH)) {
+            return OR;
+        } else if (expression.matches(NOT_REGEX_MATCH)) {
+            return NOT;
+        }
+        throw new InvalidConditionException("Invalid condition: " + expression);
     }
 
     private boolean evaluateCondition(String condition, Object validationObject) throws Exception {
