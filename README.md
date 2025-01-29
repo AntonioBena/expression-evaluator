@@ -15,9 +15,10 @@ Base url: http://localhost:8009
 
 **name** and **value** are mandatory. Expression with same name can not be created
 
-| METHOD | URL |                         DESCRIPTION                         |
-|--------|:-------------|:-----------------------------------------------------------:|
-| Post   | /expression | Creates expression with expression request and returns uuid |
+| METHOD  | URL | REQUEST BODY    |  DESCRIPTION |
+|---|-----|-----------------|---|
+| Post  | /expression   | expression json | Creates expression with expression request and returns uuid  |
+
 
 ### Expression format
 
