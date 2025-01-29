@@ -4,9 +4,11 @@ This application is a simple REST service that evaluates simple and complex expr
 without using any third party library
 
 ## Running the application
-
 1. Go to the source folder of expression evaluator
 2. Inside folder open cmd or shell and type: mvn spring-boot:run
+
+### Requirements
+1. Maven 3 and Java 21
 
 ## Expressions
 
