@@ -1,6 +1,8 @@
 package com.expression.evaluator.exception.operator;
 
-public class OperatorException extends RuntimeException {
+import com.expression.evaluator.exception.CustomException;
+
+public class OperatorException extends CustomException {
     public OperatorException(String message) {
         super(message);
     }

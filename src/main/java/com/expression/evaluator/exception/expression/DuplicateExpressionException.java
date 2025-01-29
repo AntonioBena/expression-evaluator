@@ -1,6 +1,8 @@
 package com.expression.evaluator.exception.expression;
 
-public class DuplicateExpressionException extends ExpressionException {
+import com.expression.evaluator.exception.CustomException;
+
+public class DuplicateExpressionException extends CustomException {
     public DuplicateExpressionException(String message) {
         super(message);
     }

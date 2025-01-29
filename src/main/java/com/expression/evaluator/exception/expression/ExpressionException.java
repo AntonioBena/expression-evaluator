@@ -1,6 +1,8 @@
 package com.expression.evaluator.exception.expression;
 
-public class ExpressionException extends RuntimeException {
+import com.expression.evaluator.exception.CustomException;
+
+public class ExpressionException extends CustomException {
     public ExpressionException(String message) {
         super(message);
     }

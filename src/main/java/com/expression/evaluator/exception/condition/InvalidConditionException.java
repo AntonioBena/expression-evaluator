@@ -1,11 +1,10 @@
 package com.expression.evaluator.exception.condition;
 
-public class InvalidConditionException extends ConditionException{
+import com.expression.evaluator.exception.CustomException;
+
+public class InvalidConditionException extends CustomException {
+
     public InvalidConditionException(String message) {
         super(message);
-    }
-
-    public InvalidConditionException(String message, Throwable cause) {
-        super(message, cause);
     }
 }
