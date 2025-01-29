@@ -1,6 +1,7 @@
 package com.expression.evaluator.controller;
 
 import com.expression.evaluator.Base;
+import com.expression.evaluator.exception.condition.InvalidConditionException;
 import com.expression.evaluator.model.CustomerType;
 import com.expression.evaluator.model.dto.AddressDto;
 import com.expression.evaluator.model.dto.CustomerDto;
@@ -8,7 +9,6 @@ import com.expression.evaluator.model.dto.ExpressionDto;
 import com.expression.evaluator.model.dto.RequestDto;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.ServletException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -17,9 +17,9 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.Map;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -42,7 +42,7 @@ class EvaluationControllerTest extends Base {
 
         var result = mockMvc.perform(post("/evaluate?uuid=" + expressionUuid)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content( mapper.writeValueAsString(customerRequest) ));
+                .content(mapper.writeValueAsString(customerRequest)));
 
         assertNotNull(expressionUuid);
 
@@ -64,7 +64,7 @@ class EvaluationControllerTest extends Base {
 
         var result = mockMvc.perform(post("/evaluate?uuid=" + expressionUuid)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content( mapper.writeValueAsString(customerRequest) ));
+                .content(mapper.writeValueAsString(customerRequest)));
 
         assertNotNull(expressionUuid);
 
@@ -86,14 +86,13 @@ class EvaluationControllerTest extends Base {
 
         assertNotNull(expressionUuid);
 
-        assertThrows(ServletException.class, ()-> {
-            var result = mockMvc.perform(post("/evaluate?uuid=" + expressionUuid)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content( mapper.writeValueAsString(customerRequest) ));
-
-            result.andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.message").value("Invalid condition"));
-        });
+        assertThatThrownBy(() ->
+                mockMvc.perform(post("/evaluate?uuid=" + expressionUuid)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(mapper.writeValueAsString(customerRequest)))
+                        .andExpect(status().isBadRequest()))
+                .hasCauseInstanceOf(InvalidConditionException.class)
+                .hasMessageContaining("Invalid condition");
     }
 
     @Test
@@ -108,7 +107,7 @@ class EvaluationControllerTest extends Base {
 
         var result = mockMvc.perform(post("/evaluate?uuid=" + expressionUuid)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content( mapper.writeValueAsString(customerRequest) ));
+                .content(mapper.writeValueAsString(customerRequest)));
 
         assertNotNull(expressionUuid);
 
@@ -130,7 +129,7 @@ class EvaluationControllerTest extends Base {
 
         var result = mockMvc.perform(post("/evaluate?uuid=" + expressionUuid)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content( mapper.writeValueAsString(customerRequest) ));
+                .content(mapper.writeValueAsString(customerRequest)));
 
         assertNotNull(expressionUuid);
 
@@ -153,7 +152,7 @@ class EvaluationControllerTest extends Base {
 
         var result = mockMvc.perform(post("/evaluate?uuid=" + expressionUuid)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content( mapper.writeValueAsString(customerRequest) ));
+                .content(mapper.writeValueAsString(customerRequest)));
 
         assertNotNull(expressionUuid);
 
@@ -171,7 +170,7 @@ class EvaluationControllerTest extends Base {
 
         var result = mockMvc.perform(post("/evaluate?uuid=" + "expressionUuid")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content( mapper.writeValueAsString(customerRequest) ));
+                .content(mapper.writeValueAsString(customerRequest)));
 
         result.andExpect(status().is4xxClientError());
 
@@ -193,7 +192,7 @@ class EvaluationControllerTest extends Base {
 
         var result = mockMvc.perform(post("/evaluate?uuid=" + "expressionUuid")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content( mapper.writeValueAsString(customerRequest) ));
+                .content(mapper.writeValueAsString(customerRequest)));
 
         result.andExpect(status().is4xxClientError());
 

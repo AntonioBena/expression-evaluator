@@ -1,15 +1,17 @@
 package com.expression.evaluator.controller;
 
 import com.expression.evaluator.Base;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 import org.junit.jupiter.api.Test;
+
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -26,16 +28,32 @@ class ExpressionControllerTest extends Base {
         var request = prepareExpression("simple expression",
                 "(customer.firstName == JOHN && customer.salary < 100) NOT (customer.address != null && customer.address.city == Washington)");
 
-        ResultActions result = mockMvc.perform(post("/expression")
+        var result = mockMvc.perform(post("/expression")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(request)));
-
-        result
+                .content(mapper.writeValueAsString(request)))
                 .andExpect(status().isOk());
+
         var uuid = result.andReturn().getResponse().getContentAsString();
 
         assertEquals(36, uuid.length());
     }
+    @Test
+    void test_should_not_create_complex_expression_without_attributes() throws Exception {
+        var request = prepareExpression("", "");
+
+        var result = mockMvc.perform(post("/expression")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(request)))
+                .andExpect(status().is4xxClientError());
+
+        var response = result.andReturn().getResponse().getContentAsString();
+
+        Map<String, String> errorMap = mapper.readValue(response, new TypeReference<>() {});
+
+        assertTrue(errorMap.containsKey("name"));
+        assertTrue(errorMap.containsKey("value"));
+    }
+
 
     @Test
     void test_should_not_create_complex_expression_long_with_same_name() throws Exception {
