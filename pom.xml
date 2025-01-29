@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.expression.evaluator</groupId>
 	<artifactId>expression-evaluator</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>expression-evaluator</name>
 	<description>This demo project is made to show my expertise in java and spring boot</description>
 	<url/>
