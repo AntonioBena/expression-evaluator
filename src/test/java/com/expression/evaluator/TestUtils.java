@@ -15,6 +15,15 @@ public class TestUtils {
         );
     }
 
+    public static Map<String, Object> prepareCustomer(String firstName, String lastName, int salary, String type) {
+        return Map.of(
+                "firstName", firstName,
+                "lastName", lastName,
+                "salary", salary,
+                "type", type
+        );
+    }
+
     public static Map<String, Object> prepareCustomer(String firstName, String lastName, int salary, String type, Map<String, Object> address) {
         return Map.of(
                 "firstName", firstName,
