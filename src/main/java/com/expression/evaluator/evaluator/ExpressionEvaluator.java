@@ -1,8 +1,12 @@
 package com.expression.evaluator.evaluator;
 
 import com.expression.evaluator.exception.condition.InvalidConditionException;
-import com.expression.evaluator.exception.expression.ExpressionException;
+import com.expression.evaluator.exception.field.InvalidFieldException;
 import com.expression.evaluator.exception.operator.UnsupportedOperatorException;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import static com.expression.evaluator.utils.Constants.*;
 import static com.expression.evaluator.utils.Utils.extractAndFormatCondition;
@@ -10,7 +14,7 @@ import static com.expression.evaluator.utils.Utils.extractLogicalOperator;
 
 public class ExpressionEvaluator {
 
-    public boolean evaluate(String expression, Object validationObject) throws Exception {
+    public boolean evaluate(String expression, Map<String, Object> validationObject) throws Exception {
         String[] expressionParts = expression.split(LOGICAL_REGEX);
 
         var firstResult = evaluateExpression(expressionParts[0].trim(), validationObject);
@@ -29,7 +33,7 @@ public class ExpressionEvaluator {
         return firstResult;
     }
 
-    private boolean evaluateExpression(String expression, Object validationObject) throws Exception {
+    private boolean evaluateExpression(String expression, Map<String, Object> validationObject) {
         expression = expression.trim();
         if (expression.startsWith(LEFT_PARENTHESIS) && expression.endsWith(RIGHT_PARENTHESIS)) {
             expression = expression.substring(1, expression.length() - 1);
@@ -76,7 +80,7 @@ public class ExpressionEvaluator {
         throw new InvalidConditionException("Invalid condition: " + expression);
     }
 
-    private boolean evaluateCondition(String condition, Object validationObject) throws Exception {
+    private boolean evaluateCondition(String condition, Map<String, Object> validationObject) {
         String[] variableParts = condition.split(CONDITIONS_REGEX);
         if (variableParts.length != 2) {
             throw new InvalidConditionException("Invalid condition: " + condition);
@@ -84,9 +88,11 @@ public class ExpressionEvaluator {
         var expressionVariableName = variableParts[0].trim();
         var expressionVariableValue = variableParts[1].trim();
 
-        var inputObjectVariableValue = resolveValue(expressionVariableName, validationObject);
+        var inputObjectVariableValue =
+                resolveValue(validationObject, List.of(expressionVariableName.split(DOT_REGEX)), 0);
 
-        var comparisonOperator = extractAndFormatCondition(condition, expressionVariableName, expressionVariableValue);
+        var comparisonOperator =
+                extractAndFormatCondition(condition, expressionVariableName, expressionVariableValue);
 
         return switch (comparisonOperator) {
             case EQUAL -> inputObjectVariableValue.toString().equals(expressionVariableValue);
@@ -103,18 +109,21 @@ public class ExpressionEvaluator {
         };
     }
 
-    private Object resolveValue(String inputJsonFieldPath, Object validationObject) throws Exception {
-        String[] fields = inputJsonFieldPath.split(DOT_REGEX);
-        Object currentObject = validationObject;
-
-        for (String field : fields) {
-            if (currentObject == null){
-                throw new ExpressionException("Can not process your request because you gave me null fields!");
-            }
-            var declaredField = currentObject.getClass().getDeclaredField(field);
-            declaredField.setAccessible(true);
-            currentObject = declaredField.get(currentObject);
+    private Object resolveValue(Map<String, Object> validationObject, List<String> keys, int keyIndex) {
+        if (keyIndex >= keys.size() || validationObject == null) {
+            return null;
         }
-        return currentObject;
+        var currentKey = keys.get(keyIndex);
+
+        var currentObject = Optional.ofNullable(validationObject.get(currentKey))
+                .orElseThrow(()-> new InvalidFieldException("Field " + currentKey + " is not present! "));
+
+        if (keyIndex == keys.size() - 1) {
+            return currentObject;
+        }
+        if (currentObject instanceof Map) {
+            return resolveValue((Map<String, Object>) currentObject, keys, keyIndex + 1);
+        }
+        return null;
     }
 }
