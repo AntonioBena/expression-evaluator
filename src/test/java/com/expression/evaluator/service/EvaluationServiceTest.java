@@ -3,7 +3,6 @@ package com.expression.evaluator.service;
 import com.expression.evaluator.exception.expression.DuplicateExpressionException;
 import com.expression.evaluator.exception.expression.ExpressionNotFoundException;
 import com.expression.evaluator.model.dto.ExpressionDto;
-import com.expression.evaluator.model.dto.RequestDto;
 import com.expression.evaluator.repository.ExpressionRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +10,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.util.Map;
+
+import static com.expression.evaluator.Base.prepareRequest;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
@@ -92,9 +94,10 @@ class EvaluationServiceTest {
         expressionService.createExpression(expressionDto);
 
         var dummyUuid = "DUMMY-UUID";
+        var request = prepareRequest("dummy_request", Map.of("k1", false));
 
         assertThrows(ExpressionNotFoundException.class, () -> {
-            var result = evaluation.evaluate(new RequestDto(), dummyUuid);
+            var result = evaluation.evaluate(request, dummyUuid);
 
             assertNull(result);
         });

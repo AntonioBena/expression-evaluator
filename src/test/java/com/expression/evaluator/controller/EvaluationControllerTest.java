@@ -13,7 +13,6 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.HashMap;
 
-import static com.expression.evaluator.TestUtils.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;

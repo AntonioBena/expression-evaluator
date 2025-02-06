@@ -6,8 +6,4 @@ public class ExpressionNotFoundException extends CustomException {
     public ExpressionNotFoundException(String message) {
         super(message);
     }
-
-    public ExpressionNotFoundException(String message, Throwable cause) {
-        super(message, cause);
-    }
 }
