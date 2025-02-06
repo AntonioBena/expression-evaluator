@@ -37,7 +37,7 @@ Complex expression format:
 #### LO - logical operator (&&, ||, !)
 #### LON - logical operator with name (AND, OR, NOT)
 
-### Example JSON
+### Example JSONS
 
 Simple Expression:
 ```json
@@ -46,7 +46,7 @@ Simple Expression:
   "value": "(customer.firstName == JOHN && customer.salary < 100)"
 }
 ```
-Complex Expression:
+Complex Expressions:
 ```json
 {
   "name": "complex expression",
@@ -69,9 +69,10 @@ Base url: http://localhost:8009
 |--------|-----|-----------------|--------------|----------------------------------------------------------------------------------------------------------------------|
 | Post   | /evaluate | expression UUID | json object  | Evaluates json request with given expression - returnes string with expression and evaluation result (true or false) |
 
-### Example JSON
+### Example JSONS
 
 #### Evaluation jsons are model independent
+Input json customer:
 
 ```json
 {
@@ -91,6 +92,8 @@ Base url: http://localhost:8009
   }
 }
 ```
+Input json vehicle
+
 ```json
 {
   "vehicle": {
