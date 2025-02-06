@@ -53,6 +53,12 @@ Complex Expression:
   "value": "(customer.firstName == JOHN && customer.salary < 100) NOT (customer.address != null && customer.address.city == Washington)"
 }
 ```
+```json
+{
+  "name": "complex expression long with not",
+  "value": "(vehicle.model == Mercedes && vehicle.kmDriven < 10000) AND (vehicle.vehicleExtendedInfo.wheelsSize != 20 && vehicle.vehicleExtendedInfo.frontTyreInfo.tireType == MUD_AND_SNOW)"
+}
+```
 
 ## Evaluation
 
@@ -64,6 +70,8 @@ Base url: http://localhost:8009
 | Post   | /evaluate | expression UUID | json object  | Evaluates json request with given expression - returnes string with expression and evaluation result (true or false) |
 
 ### Example JSON
+
+#### Evaluation jsons are model independent
 
 ```json
 {
@@ -83,7 +91,35 @@ Base url: http://localhost:8009
   }
 }
 ```
-type also can be "INDIVIDUAL"
+```json
+{
+  "vehicle": {
+    "model": "Mercedes",
+    "kmDriven": "1000",
+    "isNew": "isNew",
+    "vehicleOwner": "owner",
+    "vehicleExtendedInfo": {
+      "wheelsSize": 19,
+      "exhaustType": "SPORT",
+      "isKmh": true,
+      "frontTyreInfo": {
+        "tireType": "MUD_AND_SNOW",
+        "tireWidth": 225,
+        "tireHeight": 40,
+        "tireDiameter": 19
+      },
+      "backTyreInfo": {
+        "frontTyreInfo": {
+          "tireType": "MUD_AND_SNOW",
+          "tireWidth": 255,
+          "tireHeight": 35,
+          "tireDiameter": 19
+        }
+      }
+    }
+  }
+}
+```
 
 ## Database
 
