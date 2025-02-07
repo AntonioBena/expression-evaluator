@@ -19,6 +19,6 @@ public class ExpressionEntity {
     @Column(name = "expression_uuid")
     private String uuid;
     private String name;
-    @Column(name = "expression_value")
+    @Column(name = "expression_value", columnDefinition = "CLOB")
     private String value;
 }
