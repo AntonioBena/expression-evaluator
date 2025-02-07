@@ -218,7 +218,6 @@ class EvaluationControllerTest extends Base {
     }
 
 
-
     private String postExpression(ExpressionDto request) throws Exception {
         ResultActions result = mockMvc.perform(post("/expression")
                 .contentType(MediaType.APPLICATION_JSON)
