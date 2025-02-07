@@ -58,7 +58,7 @@ public class ExpressionEvaluator {
                 result = !evaluateCondition(expressionParts[1].trim(), validationObject);
                 break;
             default:
-                throw new InvalidConditionException("Invalid condition: " + expression);
+                throw new UnsupportedOperatorException("Invalid operator: " + expression);
         }
         return result;
     }
