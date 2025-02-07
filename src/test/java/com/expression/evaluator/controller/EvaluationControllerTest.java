@@ -74,7 +74,7 @@ class EvaluationControllerTest extends Base {
     }
 
     @Test
-    void test_should_evaluate_complex_OR_expression() throws Exception {//TODO
+    void test_should_evaluate_complex_OR_expression() throws Exception {
         var expressionRequest = prepareExpression("simple expression",
                 "(customer.firstName != JOHN || customer.salary >= 100) OR (customer.address != null && customer.address.city == New York)");
 

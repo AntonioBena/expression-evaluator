@@ -118,7 +118,7 @@ class ExpressionEvaluatorTest extends Base {
         var testObject = prepareCustomer("Antonio", "test", 130, "INDIVIDUAL", address);
 
         var expression = prepareExpression("simple expression",
-                "(firstName != Antonio ! salary < 100)"); //TODO
+                "(firstName != Antonio ! salary < 100)");
 
         var result = expressionEvaluator.evaluate(expression.getValue(), testObject);
 
