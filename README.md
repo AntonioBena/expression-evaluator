@@ -1,4 +1,8 @@
 # Expression Evaluator
+
+## Note: this simple service is just a test and will be updated and refactored to meet clean and maintainable code practise.
+
+
 ## Short description
 This application is a simple REST service that evaluates simple and complex expressions
 without using any third party library
